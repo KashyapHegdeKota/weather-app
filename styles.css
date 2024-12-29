@@ -1,0 +1,114 @@
+h2 {
+  text-align: center;
+}
+
+.main-container {
+  width: 600px;
+  font-family: Arial, sans-serif;
+  height: auto;
+  min-height: 400px;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 50px;
+  margin: 20px auto;
+  background-image: url("assets/background-1.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  display: flex; /* Add this */
+  flex-direction: column; /* Add this */
+  align-items: center; /* Add this */
+}
+
+#searchbar {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.results-container {
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 5px;
+  background-color: white;
+}
+
+.country-item {
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.country-item:hover {
+  background-color: #f0f0f0;
+}
+
+.no-results {
+  padding: 10px 20px;
+  color: #666;
+  font-style: italic;
+}
+
+/* New weather display styles */
+.weather-container {
+  width: 300px;
+  margin-top: 20px auto;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: rgba(28, 185, 252, 0.7);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.weather-data {
+  text-align: center;
+}
+
+.weather-data h3 {
+  margin: 0 0 10px 0;
+  color: white;
+  font-size: 24px;
+}
+
+.weather-data h2 {
+  color: white;
+}
+
+.weather-data p {
+  margin: 8px 0;
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.error {
+  color: #d32f2f;
+  text-align: center;
+  padding: 10px;
+  font-weight: 500;
+}
+/* Add this for the icon container */
+.weather-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.weather-icon-container img {
+  width: 50px;
+  height: 50px;
+}
+
+.weather-icon-container p {
+  margin: 0;
+  text-transform: capitalize;
+  color: white; /* Match other text color */
+}
