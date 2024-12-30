@@ -549,6 +549,13 @@ document.addEventListener("DOMContentLoaded", function () {
     weatherDiv.className = "weather-container";
     mainContainer.appendChild(weatherDiv);
   }
+  let forecastDiv1 = document.getElementById("forecast");
+  if (!forecastDiv1) {
+    forecastDiv1 = document.createElement("div");
+    forecastDiv1.id = "forecast";
+    forecastDiv1.className = "forecast-container";
+    mainContainer.appendChild(forecastDiv1);
+  }
 });
 
 // Create a flat array of all cities for search
@@ -597,6 +604,11 @@ function selectCity(city) {
     citiesByCountry[country].includes(city)
   );
 
+  currentWeather(city);
+  forecastWeather(city);
+}
+
+function currentWeather(city) {
   // Construct API URL with city name
   var apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=51a0c48cdb1052cd29e097610b93f6ce`;
 
@@ -619,21 +631,119 @@ function selectCity(city) {
         data.weather[0].description[0].toUpperCase() +
         data.weather[0].description.substring(1);
       const weatherIcon = data.weather[0].icon;
+      const minTemp = (data.main.temp_min - 273.15).toFixed(1);
+      const maxTemp = (data.main.temp_max - 273.15).toFixed(1);
       // Update weather display
       weatherDiv.innerHTML = `
-              <div class="weather-data">
-                    <h3>${city} Weather</h3>
-                    <h2>${tempCelsius}°C</h2>
-                    <div class="weather-icon-container">
-                        <img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" alt="Weather icon">
-                        <p>${weatherDescription}</p>
+                  <div class="weather-data">
+                        <h3>${city} Weather</h3>
+                        <h2>${tempCelsius}°C</h2>
+                        <div class="weather-icon-container">
+                            <img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" alt="Weather icon">
+                            <p>${weatherDescription}</p>
+                        </div>
+                        <p>Feels like: ${feelsLikeCelsius}°C</p>
+                        <p>Minimum: ${minTemp}°C</p>
+                        <p>Maximum: ${maxTemp}°C</p>
                     </div>
-                    <p>Feels like: ${feelsLikeCelsius}°C</p>
-                </div>
-          `;
+              `;
     })
     .catch((err) => {
       weatherDiv.innerHTML = `<div class="error">Unable to fetch weather data for ${city}</div>`;
       console.error(err);
     });
+}
+
+function forecastWeather(city) {
+  var apiURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=51a0c48cdb1052cd29e097610b93f6ce`;
+  const forecastDiv = document.getElementById("forecast");
+  forecastDiv.innerHTML = "Loading forecast..";
+  let forecastHTML = `<div id="forecast-row" class="row">`;
+  let rowCounter = 1;
+  fetch(apiURL)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Weather data not found");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      for (let i = 0; i < 40; i++) {
+        if (i % 8 == 0) {
+          const weatherIcon = data.list[i].weather[0].icon;
+          console.log(weatherIcon);
+          const date_split = data.list[i].dt_txt.split(" ");
+          const month = parseInt(
+            date_split[0].substring(5, 6) + date_split[0].substring(6, 7)
+          );
+          const date =
+            date_split[0].substring(8, 9) + date_split[0].substring(9, 10);
+
+          const weather = (data.list[i].main.temp - 273.15).toFixed(0);
+          var weatherString = weather.toString();
+          forecastHTML =
+            forecastHTML +
+            ` 
+          <div id="forecast-${rowCounter}" class="column">
+          <p>${checkMonth(month) + " " + date}</p>
+          <div class="weather-icon-container">
+                            <img src="https://openweathermap.org/img/wn/${weatherIcon}@2x.png" alt="Weather icon">
+          </div>
+          <p>${weatherString}°C</p>
+          </div>
+        `;
+          rowCounter = rowCounter + 1;
+          /*forecastMap.set(checkMonth(month) + " " + date.toString(), {
+            weatherString,
+          });*/
+        }
+      }
+      forecastHTML = forecastHTML + `</div>`;
+      console.log(forecastHTML);
+      forecastDiv.innerHTML = forecastHTML;
+      console.log(data);
+    });
+}
+
+function checkMonth(num) {
+  var month = "";
+  switch (num) {
+    case 1:
+      month = "January";
+      break;
+    case 2:
+      month = "February";
+      break;
+    case 3:
+      month = "March";
+      break;
+    case 4:
+      month = "April";
+      break;
+    case 5:
+      month = "May";
+      break;
+    case 6:
+      month = "June";
+      break;
+    case 7:
+      month = "July";
+      break;
+    case 8:
+      month = "August";
+      break;
+    case 9:
+      month = "September";
+      break;
+    case 10:
+      month = "October";
+      break;
+    case 11:
+      month = "November";
+      break;
+    case 12:
+      month = "December";
+      break;
+  }
+  return month;
 }

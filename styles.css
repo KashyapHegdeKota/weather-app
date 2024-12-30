@@ -112,3 +112,32 @@ h2 {
   text-transform: capitalize;
   color: white; /* Match other text color */
 }
+
+.forecast-container {
+  align-items: center;
+  width: 500px;
+  margin-top: 20px auto;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.row {
+  display: flex;
+  border-radius: 0px;
+}
+.column {
+  border-radius: 8px;
+  height: 100%;
+  width: 200px;
+  border: 0.5px solid black;
+  background-color: rgba(28, 185, 252, 0.7);
+}
+
+.column p {
+  color: white;
+}
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
